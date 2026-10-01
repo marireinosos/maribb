@@ -1,6 +1,6 @@
 """
-🎨 Tablero de Mari — Tablero para dibujo
-Dibuja libre, haz figuras, elige colores y descarga tu dibujo.
+🖤 Tablero de Mari — Tablero para dibujo (modo dark)
+Dibuja libre, haz figuras, elige colores neón y descarga tu dibujo.
 """
 
 import io
@@ -17,7 +17,7 @@ from streamlit_drawable_canvas import st_canvas
 # ─────────────────────────────────────────────
 st.set_page_config(
     page_title="Tablero de Mari",
-    page_icon="🎨",
+    page_icon="🖤",
     layout="wide",
 )
 
@@ -34,244 +34,277 @@ def html(codigo):
 # OPCIONES ✏️ (puedes agregar colores o ideas aquí)
 # ─────────────────────────────────────────────
 HERRAMIENTAS = {
-    "✏️ Lápiz libre":       "freedraw",
-    "📏 Línea":             "line",
-    "⬜ Rectángulo":        "rect",
-    "⚪ Círculo":           "circle",
-    "🔺 Polígono":          "polygon",
-    "🫧 Puntos":            "point",
-    "✋ Mover y editar":    "transform",
+    "✏️ Lápiz libre":    "freedraw",
+    "📏 Línea":          "line",
+    "⬜ Rectángulo":     "rect",
+    "⚪ Círculo":        "circle",
+    "🔺 Polígono":       "polygon",
+    "✦ Puntos":          "point",
+    "✋ Mover y editar": "transform",
 }
 
 AYUDAS = {
-    "freedraw":  "Mantén presionado y dibuja como en papel.",
-    "line":      "Haz clic, arrastra y suelta para trazar una línea recta.",
+    "freedraw":  "Mantén presionado y dibuja libre.",
+    "line":      "Clic, arrastra y suelta para una línea recta.",
     "rect":      "Arrastra en diagonal para crear el rectángulo.",
     "circle":    "Arrastra desde el centro hacia afuera.",
-    "polygon":   "Clic en cada esquina. Doble clic para cerrar la figura.",
-    "point":     "Cada clic deja un puntito. ¡Ideal para estrellas o confeti!",
-    "transform": "Haz clic sobre una figura para moverla, girarla o cambiarle el tamaño.",
+    "polygon":   "Clic en cada esquina. Doble clic para cerrar.",
+    "point":     "Cada clic deja un punto. Perfecto para estrellas.",
+    "transform": "Clic en una figura para moverla, girarla o escalarla.",
 }
 
 COLORES_TRAZO = {
-    "Café":       "#6f4e37",
-    "Rosa":       "#d99aa0",
-    "Fucsia":     "#e75480",
-    "Durazno":    "#f4a582",
-    "Lila":       "#b39ddb",
-    "Salvia":     "#9cbf9b",
-    "Cielo":      "#90caf9",
-    "Negro":      "#2b2b2b",
+    "Blanco":  "#f5f5f7",
+    "Violeta": "#a78bfa",
+    "Cian":    "#22d3ee",
+    "Rosa":    "#f472b6",
+    "Lima":    "#a3e635",
+    "Naranja": "#fb923c",
+    "Amarillo":"#facc15",
+    "Rojo":    "#f43f5e",
 }
 
 FONDOS = {
-    "Crema":        "#fffaf5",
-    "Beige":        "#f4e9dd",
-    "Rosa pálido":  "#fbe7e7",
-    "Blanco":       "#ffffff",
-    "Café oscuro":  "#3e2a1f",
+    "Negro":       "#0a0a0d",
+    "Carbón":      "#18181d",
+    "Grafito":     "#2a2a32",
+    "Azul noche":  "#0f172a",
+    "Blanco":      "#ffffff",
 }
 
 IDEAS = [
-    "una taza de café con corazones saliendo ☕",
-    "un gatito durmiendo en una nube ☁️",
-    "tu outfit favorito 👗",
-    "un atardecer en Medellín 🌄",
-    "una flor gigante con cara feliz 🌸",
-    "un helado de tres sabores 🍦",
-    "tu lugar favorito del mundo 🗺️",
-    "un moño con brillitos 🎀",
-    "una casa de muñecas 🏡",
-    "tu animal favorito usando gafas 🕶️",
-    "un pastel de cumpleaños 🎂",
-    "una ventana con lluvia afuera 🌧️",
+    "una ciudad de noche con luces neón",
+    "una galaxia con planetas raros",
+    "un gato negro bajo la luna",
+    "un rayo partiendo una nube",
+    "tu inicial en letra gótica",
+    "un ojo que todo lo ve",
+    "una calavera con flores",
+    "una constelación inventada",
+    "un portal a otra dimensión",
+    "una tormenta en el mar",
+    "un fantasma tímido",
+    "unas gafas de sol reflejando un atardecer",
 ]
 
 
 # ─────────────────────────────────────────────
-# ESTILOS · beige, rosado y café 🤎🎀
+# ESTILOS · super dark 🖤
 # ─────────────────────────────────────────────
 html("""
 <style>
-    @import url('https://fonts.googleapis.com/css2?family=Great+Vibes&family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Poppins:wght@300;400;500;600&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap');
 
-    .stApp, .stApp p, .stApp label, .stApp input, .stApp button, .stApp li {
-        font-family: 'Poppins', sans-serif;
+    :root {
+        --bg:      #0a0a0d;
+        --panel:   #121217;
+        --panel2:  #18181f;
+        --borde:   #26262f;
+        --texto:   #ececf1;
+        --suave:   #8b8b99;
+        --acento:  #a78bfa;
+        --acento2: #22d3ee;
     }
-    .stApp h1, .stApp h2, .stApp h3, .stApp h4 {
-        font-family: 'Cormorant Garamond', serif !important;
-        color: #6f4e37 !important;
-        font-weight: 600 !important;
+
+    .stApp, .stApp p, .stApp label, .stApp input, .stApp button, .stApp li, .stApp span {
+        font-family: 'Space Grotesk', sans-serif;
     }
     .stApp {
         background:
-            radial-gradient(circle at 0% 0%, #f9e4e4 0%, transparent 35%),
-            radial-gradient(circle at 100% 30%, #f3e2d2 0%, transparent 40%),
-            #f8f0e7;
+            radial-gradient(circle at 15% -10%, rgba(167,139,250,0.14) 0%, transparent 40%),
+            radial-gradient(circle at 100% 40%, rgba(34,211,238,0.08) 0%, transparent 40%),
+            var(--bg);
+        color: var(--texto);
     }
-    p, li, label { color: #7d5f4a; }
+    .stApp h1, .stApp h2, .stApp h3, .stApp h4 { color: var(--texto) !important; }
+    p, li, label, .stMarkdown { color: var(--texto); }
+    [data-testid="stCaptionContainer"], .stCaption { color: var(--suave) !important; }
+    [data-testid="stHeader"] { background: transparent; }
 
     /* Sidebar */
     [data-testid="stSidebar"] {
-        background: #fffaf5 !important;
-        border-right: 1px solid #ead8c4;
+        background: var(--panel) !important;
+        border-right: 1px solid var(--borde);
     }
     [data-testid="stSidebar"] h3 {
-        font-family: 'Poppins', sans-serif !important;
-        font-size: 0.72rem !important;
-        letter-spacing: 2.5px;
+        font-size: 0.7rem !important;
+        letter-spacing: 3px;
         text-transform: uppercase;
-        color: #b8977c !important;
+        color: var(--suave) !important;
+        font-weight: 600 !important;
     }
 
     /* Cajas */
     [data-testid="stVerticalBlockBorderWrapper"] {
-        border: 1px solid #ead8c4 !important;
-        border-radius: 28px !important;
-        background: #fffaf5;
-        box-shadow: 0 10px 28px rgba(111,78,55,0.07);
+        border: 1px solid var(--borde) !important;
+        border-radius: 20px !important;
+        background: var(--panel);
     }
 
     /* Botones */
     .stButton > button, [data-testid="stDownloadButton"] button {
-        background: linear-gradient(135deg, #e8b4b8, #d99aa0) !important;
-        color: #ffffff !important;
-        border: none !important;
-        border-radius: 999px !important;
-        font-weight: 500 !important;
-        letter-spacing: 0.5px;
+        background: var(--panel2) !important;
+        color: var(--texto) !important;
+        border: 1px solid var(--borde) !important;
+        border-radius: 12px !important;
+        font-weight: 600 !important;
         transition: all 0.25s ease !important;
     }
     .stButton > button:hover, [data-testid="stDownloadButton"] button:hover {
-        background: linear-gradient(135deg, #b8977c, #6f4e37) !important;
-        transform: translateY(-2px);
+        border-color: var(--acento) !important;
+        box-shadow: 0 0 18px rgba(167,139,250,0.35);
+        transform: translateY(-1px);
+    }
+    [data-testid="stDownloadButton"] button {
+        background: linear-gradient(135deg, #7c3aed, #0891b2) !important;
+        border: none !important;
     }
 
     /* Métricas */
     [data-testid="stMetric"] {
-        background: #fffaf5;
-        border: 1px solid #ead8c4;
-        border-radius: 22px;
+        background: var(--panel2);
+        border: 1px solid var(--borde);
+        border-radius: 16px;
         padding: 12px 16px;
-        text-align: center;
     }
     [data-testid="stMetricValue"] {
-        font-family: 'Cormorant Garamond', serif;
-        color: #d99aa0 !important;
+        font-family: 'JetBrains Mono', monospace;
+        color: var(--acento) !important;
     }
 
     /* Encabezado */
     .portada {
-        background: linear-gradient(135deg, #fffaf5 0%, #f7e3dc 50%, #efd9c7 100%);
-        border: 1px solid #ead8c4;
-        border-radius: 36px;
-        padding: 40px 36px 34px;
-        text-align: center;
         position: relative;
         overflow: hidden;
-        box-shadow: 0 16px 44px rgba(111,78,55,0.12);
-        font-family: 'Poppins', sans-serif;
+        border: 1px solid var(--borde);
+        border-radius: 26px;
+        padding: 38px 36px;
+        background:
+            linear-gradient(var(--panel), var(--panel)) padding-box,
+            linear-gradient(135deg, rgba(167,139,250,0.6), rgba(34,211,238,0.4), transparent 60%) border-box;
+        border: 1px solid transparent;
+        font-family: 'Space Grotesk', sans-serif;
     }
-    .portada .mini {
+    .portada .grid {
+        position: absolute; inset: 0;
+        background-image:
+            linear-gradient(rgba(255,255,255,0.035) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(255,255,255,0.035) 1px, transparent 1px);
+        background-size: 28px 28px;
+        mask-image: linear-gradient(90deg, transparent, black 40%, black 70%, transparent);
+    }
+    .portada .tag {
+        position: relative;
+        display: inline-block;
+        font-family: 'JetBrains Mono', monospace;
         font-size: 0.72rem;
-        letter-spacing: 5px;
-        text-transform: uppercase;
-        color: #9c7a60;
+        color: var(--acento2);
+        border: 1px solid rgba(34,211,238,0.35);
+        border-radius: 999px;
+        padding: 4px 12px;
+        letter-spacing: 1px;
     }
-    .portada .firma {
-        font-family: 'Great Vibes', cursive;
-        font-size: 4.4rem;
-        line-height: 1.05;
-        color: #6f4e37;
-        margin-top: 6px;
+    .portada h1 {
+        position: relative;
+        font-size: 3.4rem;
+        font-weight: 700;
+        line-height: 1;
+        margin: 14px 0 8px;
+        color: #ffffff;
+        letter-spacing: -1.5px;
     }
-    .portada .firma span { color: #d99aa0; }
+    .portada h1 span {
+        background: linear-gradient(90deg, #a78bfa, #22d3ee);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+    }
     .portada p {
-        color: #8a6a55;
-        margin: 6px 0 0;
-        font-size: 0.98rem;
+        position: relative;
+        color: var(--suave);
+        margin: 0;
+        font-size: 1rem;
     }
-    .deco {
-        position: absolute;
-        font-size: 1.4rem;
-        opacity: 0.75;
-        animation: flotar 5s ease-in-out infinite;
+    .cursor {
+        display: inline-block;
+        width: 3px;
+        height: 2.6rem;
+        margin-left: 6px;
+        vertical-align: -6px;
+        background: var(--acento2);
+        animation: parpadeo 1s steps(1) infinite;
     }
-    @keyframes flotar {
-        0%, 100% { transform: translateY(0) rotate(0deg); }
-        50%      { transform: translateY(-10px) rotate(10deg); }
-    }
+    @keyframes parpadeo { 50% { opacity: 0; } }
 
-    /* Idea del día */
+    /* Idea */
     .idea {
-        background: #fbe7e7;
-        border: 1px dashed #d99aa0;
-        border-radius: 22px;
-        padding: 14px 20px;
-        text-align: center;
-        color: #6f4e37;
-        font-family: 'Poppins', sans-serif;
-        font-size: 0.95rem;
-    }
-    .idea b {
-        font-family: 'Cormorant Garamond', serif;
-        font-style: italic;
-        font-size: 1.3rem;
-    }
-
-    /* Ayuda de la herramienta */
-    .ayuda {
-        background: #f4e9dd;
+        background: var(--panel);
+        border: 1px dashed #3a3a46;
         border-radius: 16px;
-        padding: 10px 14px;
-        font-size: 0.82rem;
-        color: #6f4e37;
-        font-family: 'Poppins', sans-serif;
+        padding: 14px 18px;
+        color: var(--suave);
+        font-size: 0.95rem;
+        font-family: 'Space Grotesk', sans-serif;
+    }
+    .idea b { color: var(--texto); }
+    .idea code {
+        font-family: 'JetBrains Mono', monospace;
+        color: var(--acento);
+        background: transparent;
+        margin-right: 6px;
     }
 
-    /* Bolitas de color */
-    .bolitas { display: flex; flex-wrap: wrap; gap: 8px; margin: 4px 0 2px; }
+    /* Ayuda */
+    .ayuda {
+        background: var(--panel2);
+        border-left: 3px solid var(--acento);
+        border-radius: 10px;
+        padding: 9px 12px;
+        font-size: 0.8rem;
+        color: var(--suave);
+        font-family: 'Space Grotesk', sans-serif;
+    }
+
+    /* Bolitas */
+    .bolitas { display: flex; flex-wrap: wrap; gap: 8px; margin: 6px 0 2px; }
     .bolita {
-        width: 26px; height: 26px; border-radius: 50%;
-        border: 2px solid #fffaf5;
-        box-shadow: 0 0 0 1px #ead8c4;
+        width: 22px; height: 22px; border-radius: 50%;
+        border: 2px solid var(--panel);
+        box-shadow: 0 0 0 1px var(--borde);
     }
-    .bolita.activa { box-shadow: 0 0 0 2px #6f4e37; transform: scale(1.12); }
+    .bolita.activa {
+        box-shadow: 0 0 0 2px #ffffff, 0 0 14px currentColor;
+        transform: scale(1.15);
+    }
 
-    /* Marco del tablero */
-    .marco-titulo {
+    /* Barra del tablero */
+    .barra {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        font-family: 'Poppins', sans-serif;
-        color: #9c7a60;
-        font-size: 0.8rem;
-        letter-spacing: 1.5px;
-        text-transform: uppercase;
-        margin-bottom: 4px;
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 0.75rem;
+        color: var(--suave);
+        margin-bottom: 6px;
+    }
+    .barra .puntos span {
+        display: inline-block; width: 10px; height: 10px; border-radius: 50%;
+        margin-right: 5px;
     }
     iframe[title="streamlit_drawable_canvas.st_canvas"] {
-        border-radius: 18px;
-        box-shadow: 0 8px 24px rgba(111,78,55,0.15);
+        border-radius: 14px;
+        box-shadow: 0 0 0 1px var(--borde), 0 20px 50px rgba(0,0,0,0.6);
     }
 
     .footer {
         text-align: center;
-        margin-top: 30px;
-        font-family: 'Poppins', sans-serif;
-    }
-    .footer .firma {
-        font-family: 'Great Vibes', cursive;
-        font-size: 2.2rem;
-        color: #6f4e37;
-    }
-    .footer p {
+        margin-top: 34px;
+        font-family: 'JetBrains Mono', monospace;
         font-size: 0.75rem;
-        letter-spacing: 2px;
-        text-transform: uppercase;
-        color: #b8977c;
-        margin: 0;
+        color: #55555f;
+        letter-spacing: 1px;
     }
+    .footer b { color: var(--acento); font-weight: 600; }
 </style>
 """)
 
@@ -281,71 +314,65 @@ html("""
 # ─────────────────────────────────────────────
 with st.sidebar:
     html("""
-    <div style="text-align:center; padding-top:6px;">
-        <div style="font-family:'Great Vibes',cursive; font-size:2.3rem; color:#6f4e37;">Mi estuche</div>
-        <div style="font-family:'Poppins',sans-serif; font-size:0.7rem; letter-spacing:3px;
-                    text-transform:uppercase; color:#b8977c;">propiedades del tablero</div>
+    <div style="font-family:'Space Grotesk',sans-serif; padding-top:4px;">
+        <div style="font-size:1.6rem; font-weight:700; color:#ffffff; letter-spacing:-0.5px;">
+            Propiedades
+        </div>
+        <div style="font-family:'JetBrains Mono',monospace; font-size:0.72rem; color:#8b8b99;">
+            // del tablero
+        </div>
     </div>
     """)
     st.divider()
 
     # ── Herramienta ──
-    st.markdown("### 🖌️ Herramienta")
+    st.markdown("### Herramienta")
     herramienta_sel = st.selectbox("Herramienta de dibujo", list(HERRAMIENTAS.keys()),
                                    label_visibility="collapsed")
     drawing_mode = HERRAMIENTAS[herramienta_sel]
-    html(f'<div class="ayuda">💡 {AYUDAS[drawing_mode]}</div>')
+    html(f'<div class="ayuda">{AYUDAS[drawing_mode]}</div>')
 
-    stroke_width = st.slider("Grosor de la línea", 1, 30, 6)
-    if drawing_mode == "point":
-        point_radius = st.slider("Tamaño de los puntos", 1, 25, 6)
-    else:
-        point_radius = 6
+    stroke_width = st.slider("Grosor de la línea", 1, 30, 5)
+    point_radius = st.slider("Tamaño de los puntos", 1, 25, 5) if drawing_mode == "point" else 5
 
     st.divider()
 
-    # ── Colores ──
-    st.markdown("### 🎨 Color del trazo")
-    color_nombre = st.radio("Color", list(COLORES_TRAZO.keys()) + ["🌈 Otro"],
-                            horizontal=True, label_visibility="collapsed")
-    if color_nombre == "🌈 Otro":
-        stroke_color = st.color_picker("Elige tu color", "#e75480")
+    # ── Color ──
+    st.markdown("### Color del trazo")
+    color_nombre = st.selectbox("Color", list(COLORES_TRAZO.keys()) + ["Otro…"],
+                                index=1, label_visibility="collapsed")
+    if color_nombre == "Otro…":
+        stroke_color = st.color_picker("Elige tu color", "#a78bfa")
     else:
         stroke_color = COLORES_TRAZO[color_nombre]
 
-    bolitas = "".join(
+    html('<div class="bolitas">' + "".join(
         f'<div class="bolita {"activa" if c == stroke_color else ""}" '
-        f'style="background:{c};" title="{n}"></div>'
+        f'style="background:{c}; color:{c};" title="{n}"></div>'
         for n, c in COLORES_TRAZO.items()
-    )
-    html(f'<div class="bolitas">{bolitas}</div>')
+    ) + "</div>")
 
-    rellenar = st.toggle("Rellenar figuras", value=False,
-                         help="Para rectángulos, círculos y polígonos")
-    opacidad = st.slider("Transparencia del relleno", 0.1, 1.0, 0.35, 0.05,
-                         disabled=not rellenar)
+    rellenar = st.toggle("Rellenar figuras", value=False)
+    opacidad = st.slider("Opacidad del relleno", 0.1, 1.0, 0.3, 0.05, disabled=not rellenar)
 
     st.divider()
 
     # ── Fondo ──
-    st.markdown("### 🧺 Fondo")
-    fondo_nombre = st.selectbox("Color de fondo", list(FONDOS.keys()) + ["🌈 Otro"],
+    st.markdown("### Fondo")
+    fondo_nombre = st.selectbox("Color de fondo", list(FONDOS.keys()) + ["Otro…"],
                                 label_visibility="collapsed")
-    if fondo_nombre == "🌈 Otro":
-        bg_color = st.color_picker("Color del fondo", "#fffaf5")
-    else:
-        bg_color = FONDOS[fondo_nombre]
+    bg_color = st.color_picker("Color del fondo", "#0a0a0d") if fondo_nombre == "Otro…" \
+        else FONDOS[fondo_nombre]
 
     st.divider()
 
     # ── Dimensiones ──
-    st.markdown("### 📐 Dimensiones del tablero")
+    st.markdown("### Dimensiones")
     canvas_width = st.slider("Ancho del tablero", 300, 900, 700, 50)
     canvas_height = st.slider("Alto del tablero", 200, 700, 450, 50)
 
     st.divider()
-    tiempo_real = st.toggle("Actualizar mientras dibujo", value=True,
-                            help="Si se pone lenta, apágalo y verás un botón para enviar el dibujo.")
+    tiempo_real = st.toggle("Actualizar en tiempo real", value=True)
 
 
 def hex_a_rgba(hex_color, alpha):
@@ -362,13 +389,10 @@ fill_color = hex_a_rgba(stroke_color, opacidad) if rellenar else "rgba(0, 0, 0, 
 # ─────────────────────────────────────────────
 html("""
 <div class="portada">
-    <span class="deco" style="top:24px; left:36px;">🎨</span>
-    <span class="deco" style="top:40px; right:52px; animation-delay:1.2s;">🖌️</span>
-    <span class="deco" style="bottom:22px; left:18%; animation-delay:2s;">🎀</span>
-    <span class="deco" style="bottom:26px; right:20%; animation-delay:1.6s;">✨</span>
-    <div class="mini">Tablero para dibujo</div>
-    <div class="firma">Tablero de <span>Mari</span></div>
-    <p>Elige tus colores, tu herramienta favorita y deja volar la imaginación 🤎</p>
+    <div class="grid"></div>
+    <span class="tag">● tablero_para_dibujo.py</span>
+    <h1>Tablero de <span>Mari</span><span class="cursor"></span></h1>
+    <p>Un lienzo oscuro, colores que brillan y cero reglas.</p>
 </div>
 """)
 
@@ -381,13 +405,12 @@ st.write("")
 if "idea" not in st.session_state:
     st.session_state.idea = random.choice(IDEAS)
 
-col_idea, col_btn = st.columns([4, 1], vertical_alignment="center")
+col_idea, col_btn = st.columns([5, 1])
 with col_idea:
-    html(f'<div class="idea">¿No sabes qué dibujar? Intenta con… <b>{st.session_state.idea}</b></div>')
+    html(f'<div class="idea"><code>&gt; idea:</code><b>{st.session_state.idea}</b></div>')
 with col_btn:
-    if st.button("🎲 Otra idea", use_container_width=True):
-        opciones = [i for i in IDEAS if i != st.session_state.idea]
-        st.session_state.idea = random.choice(opciones)
+    if st.button("🎲 Otra", use_container_width=True):
+        st.session_state.idea = random.choice([i for i in IDEAS if i != st.session_state.idea])
         st.rerun()
 
 st.write("")
@@ -401,37 +424,44 @@ col_tablero, col_info = st.columns([3, 1], gap="large")
 with col_tablero:
     with st.container(border=True):
         html(f"""
-        <div class="marco-titulo">
-            <span>✏️ {herramienta_sel}</span>
-            <span>{canvas_width} × {canvas_height} px</span>
+        <div class="barra">
+            <span class="puntos"><span style="background:#f43f5e"></span><span style="background:#facc15"></span><span style="background:#a3e635"></span></span>
+            <span>{herramienta_sel} · {stroke_width}px</span>
+            <span>{canvas_width}×{canvas_height}</span>
         </div>
         """)
-        canvas_result = st_canvas(
-            fill_color=fill_color,
-            stroke_width=stroke_width,
-            stroke_color=stroke_color,
-            background_color=bg_color,
-            height=canvas_height,
-            width=canvas_width,
-            drawing_mode=drawing_mode,
-            point_display_radius=point_radius,
-            update_streamlit=tiempo_real,
-            display_toolbar=True,
-            key=f"tablero_{canvas_width}_{canvas_height}",
-        )
-        st.caption("↩️ Deshacer · ↪️ Rehacer · 🗑️ Borrar todo: usa los íconos debajo del tablero.")
+        try:
+            canvas_result = st_canvas(
+                fill_color=fill_color,
+                stroke_width=stroke_width,
+                stroke_color=stroke_color,
+                background_color=bg_color,
+                height=canvas_height,
+                width=canvas_width,
+                drawing_mode=drawing_mode,
+                point_display_radius=point_radius,
+                update_streamlit=tiempo_real,
+                display_toolbar=True,
+                key=f"tablero_{canvas_width}_{canvas_height}",
+            )
+        except Exception as e:
+            st.error("El tablero no pudo cargar 😢 Revisa las versiones en requirements.txt.")
+            st.code(f"{type(e).__name__}: {e}")
+            st.stop()
+
+        st.caption("↩ deshacer · ↪ rehacer · 🗑 borrar todo → íconos debajo del tablero")
 
 
 # ─────────────────────────────────────────────
 # INFO DEL DIBUJO + DESCARGA
 # ─────────────────────────────────────────────
 NOMBRES_FIGURAS = {
-    "path": "✏️ Trazos",
-    "line": "📏 Líneas",
-    "rect": "⬜ Rectángulos",
-    "circle": "⚪ Círculos",
-    "polygon": "🔺 Polígonos",
-    "path_polygon": "🔺 Polígonos",
+    "path": "Trazos",
+    "line": "Líneas",
+    "rect": "Rectángulos",
+    "circle": "Círculos",
+    "polygon": "Polígonos",
+    "path_polygon": "Polígonos",
 }
 
 with col_info:
@@ -447,45 +477,37 @@ with col_info:
         if objetos:
             conteo = {}
             for o in objetos:
-                nombre = NOMBRES_FIGURAS.get(o.get("type", ""), "🫧 Otros")
+                nombre = NOMBRES_FIGURAS.get(o.get("type", ""), "Otros")
                 conteo[nombre] = conteo.get(nombre, 0) + 1
             for nombre, n in sorted(conteo.items(), key=lambda x: -x[1]):
-                st.write(f"{nombre}: **{n}**")
+                st.write(f"`{n:02d}` {nombre}")
 
             colores_usados = {o.get("stroke") for o in objetos if o.get("stroke")}
             if colores_usados:
-                st.caption("Colores que usaste")
+                st.caption("Paleta usada")
                 html('<div class="bolitas">' + "".join(
                     f'<div class="bolita" style="background:{c};"></div>' for c in colores_usados
                 ) + "</div>")
+
+            st.write("")
+            if canvas_result.image_data is not None:
+                dibujo = Image.fromarray(canvas_result.image_data.astype(np.uint8), "RGBA")
+                fondo = Image.new("RGBA", dibujo.size, bg_color)
+                final = Image.alpha_composite(fondo, dibujo).convert("RGB")
+                buf = io.BytesIO()
+                final.save(buf, format="PNG")
+                st.download_button(
+                    "⬇ Descargar PNG",
+                    data=buf.getvalue(),
+                    file_name="dibujo_de_mari.png",
+                    mime="image/png",
+                    use_container_width=True,
+                )
         else:
-            st.caption("Aún no has dibujado nada… ¡el tablero te espera! 🤎")
-
-        st.write("")
-
-        # Descargar como PNG (pegamos el dibujo sobre el color de fondo)
-        if canvas_result.image_data is not None and objetos:
-            dibujo = Image.fromarray(canvas_result.image_data.astype(np.uint8), "RGBA")
-            fondo = Image.new("RGBA", dibujo.size, bg_color)
-            final = Image.alpha_composite(fondo, dibujo).convert("RGB")
-
-            buf = io.BytesIO()
-            final.save(buf, format="PNG")
-            st.download_button(
-                "💾 Descargar dibujo",
-                data=buf.getvalue(),
-                file_name="dibujo_de_mari.png",
-                mime="image/png",
-                use_container_width=True,
-            )
+            st.caption("El lienzo está vacío. Empieza a dibujar →")
 
 
 # ─────────────────────────────────────────────
 # PIE
 # ─────────────────────────────────────────────
-html("""
-<div class="footer">
-    <div class="firma">con cariño, Mari</div>
-    <p>hecho en clase con python y streamlit ☕</p>
-</div>
-""")
+html('<div class="footer">hecho en clase por <b>Mari</b> · python + streamlit</div>')
