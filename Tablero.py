@@ -3,6 +3,7 @@
 Dibuja libre, haz figuras, elige colores neón y descarga tu dibujo.
 """
 
+import inspect
 import io
 import random
 
@@ -430,26 +431,32 @@ with col_tablero:
             <span>{canvas_width}×{canvas_height}</span>
         </div>
         """)
+        opciones = dict(
+            fill_color=fill_color,
+            stroke_width=stroke_width,
+            stroke_color=stroke_color,
+            background_color=bg_color,
+            height=canvas_height,
+            width=canvas_width,
+            drawing_mode=drawing_mode,
+            point_display_radius=point_radius,
+            update_streamlit=tiempo_real,
+            display_toolbar=True,
+            key=f"tablero_{canvas_width}_{canvas_height}",
+        )
+        # Usamos solo las opciones que acepta la versión instalada de la librería
+        aceptadas = inspect.signature(st_canvas).parameters
+        opciones = {k: v for k, v in opciones.items() if k in aceptadas}
+
         try:
-            canvas_result = st_canvas(
-                fill_color=fill_color,
-                stroke_width=stroke_width,
-                stroke_color=stroke_color,
-                background_color=bg_color,
-                height=canvas_height,
-                width=canvas_width,
-                drawing_mode=drawing_mode,
-                point_display_radius=point_radius,
-                update_streamlit=tiempo_real,
-                display_toolbar=True,
-                key=f"tablero_{canvas_width}_{canvas_height}",
-            )
+            canvas_result = st_canvas(**opciones)
         except Exception as e:
             st.error("El tablero no pudo cargar 😢 Revisa las versiones en requirements.txt.")
             st.code(f"{type(e).__name__}: {e}")
             st.stop()
 
-        st.caption("↩ deshacer · ↪ rehacer · 🗑 borrar todo → íconos debajo del tablero")
+        if "display_toolbar" in aceptadas:
+            st.caption("↩ deshacer · ↪ rehacer · 🗑 borrar todo → íconos debajo del tablero")
 
 
 # ─────────────────────────────────────────────
