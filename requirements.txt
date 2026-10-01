@@ -2,3 +2,6 @@ streamlit==1.38.0
 streamlit-drawable-canvas==0.9.3
 numpy
 Pillow
+opencv-python-headless
+scikit-learn
+scipy
